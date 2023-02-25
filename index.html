@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Boolean Algebra Performance Viewer</title>
+  <script src="script.js"></script>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 5px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Boolean Algebra Performance Viewer</h1>
+  <label for="num1">Binary Number 1:</label>
+  <input type="text" id="num1" name="num1" size="150px"><br><br>
+  <label for="num2">Binary Number 2:</label>
+  <input type="text" id="num2" name="num2" size="150px"><br><br>
+  <label for="iterations">Iteration Count:</label>
+  <input type="text" id="iterations" name="iterations" value="1000"><br><br>
+  <button onclick="runBenchmark()">Run Benchmark</button>
+  <p>Iteration: <span id="iterationCount">0</span></p>
+  <div id="results"></div>
+</body>
+</html>

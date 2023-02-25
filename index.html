@@ -17,11 +17,13 @@
 <body>
   <h1>Boolean Algebra Performance Viewer</h1>
   <label for="num1">Binary Number 1:</label>
-  <input type="text" id="num1" name="num1" size="150px"><br><br>
+  <input type="text" id="num1" name="num1" size="150px" value="10101010101010101010101010101010101010101010101010"><br><br>
   <label for="num2">Binary Number 2:</label>
-  <input type="text" id="num2" name="num2" size="150px"><br><br>
+  <input type="text" id="num2" name="num2" size="150px" value="01010101010101010101010101010101010101010101010101"><br><br>
+  <label for="binaryLength">Binary Length:</label>
+  <input type="number" id="binaryLength" name="binaryLength" value="64"><br><br>
   <label for="iterations">Iteration Count:</label>
-  <input type="text" id="iterations" name="iterations" value="1000"><br><br>
+  <input type="text" id="iterations" name="iterations" value="10"><br><br>
   <button onclick="runBenchmark()">Run Benchmark</button>
   <p>Iteration: <span id="iterationCount">0</span></p>
   <div id="results"></div>

@@ -42,16 +42,24 @@ function addBinary(num1, num2) {
 }
 
   
-  function runBenchmark() {
-    let binary1 = document.getElementById("num1").value;
-    let binary2 = document.getElementById("num2").value;
-    let iterations = parseInt(document.getElementById("iterations").value);
+function generateRandomBinary(length) {
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += Math.floor(Math.random() * 2);
+    }
+    return result;
+  }
   
+  function runBenchmark() {
+    let iterations = parseInt(document.getElementById("iterations").value);
     let result1, result2;
     let time1 = 0, time2 = 0;
+    let table = "<table><thead><tr><th>Algorithm</th><th>Result</th><th>Time Elapsed (ms)</th></tr></thead><tbody>";
   
     for (let i = 0; i < iterations; i++) {
-      document.getElementById("iterationCount").innerHTML = i + 1;
+      let binary1 = generateRandomBinary(Math.floor(Math.random() * 100) + 1);
+      let binary2 = generateRandomBinary(Math.floor(Math.random() * 100) + 1);
+      
       let start1 = performance.now();
       result1 = addBinary(binary1, binary2);
       let end1 = performance.now();
@@ -61,14 +69,25 @@ function addBinary(num1, num2) {
       result2 = addBinaryOptimized(binary1, binary2);
       let end2 = performance.now();
       time2 += (end2 - start2);
+  
+      if ((i + 1) % 10 == 0 || i == iterations - 1) {
+        time1 /= 10;
+        time2 /= 10;
+        table += "<tr><td>Average Time Elapsed - Not optimized</td><td></td><td>" + time1.toFixed(4) + "</td></tr>";
+        table += "<tr><td>Average Time Elapsed - Optimized using Boolean Algebra Laws</td><td></td><td>" + time2.toFixed(4) + "</td></tr>";
+        time1 = 0;
+        time2 = 0;
+      }
+      
+      table += "<tr><td>Iteration " + (i + 1) + "</td><td></td><td></td></tr>";
+      table += "<tr><td>Algorithm One - Not optimized</td><td>" + result1 + "</td><td>" + (end1 - start1).toFixed(4) + "</td></tr>";
+      table += "<tr><td>Algorithm Two - Optimized using Boolean Algebra Laws</td><td>" + result2 + "</td><td>" + (end2 - start2).toFixed(4) + "</td></tr>";
     }
   
-    time1 /= iterations;
-    time2 /= iterations;
-  
-    let table = "<table><thead><tr><th>Algorithm</th><th>Result</th><th>Time Elapsed (ms)</th></tr></thead><tbody><tr><td>Algorithm One - Not optimized</td><td>" + result1 + "</td><td>" + time1.toFixed(4) + "</td></tr><tr><td>Algorithm Two - Optimized using Boolean Algebra Laws</td><td>" + result2 + "</td><td>" + time2.toFixed(4) + "</td></tr></tbody></table>";
+    table += "</tbody></table>";
     document.getElementById("results").innerHTML = table;
   }
+  
   
   
    

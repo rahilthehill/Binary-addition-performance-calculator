@@ -1,31 +1,117 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Boolean Algebra Performance Viewer</title>
-  <script src="script.js"></script>
-  <style>
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 5px;
-      text-align: left;
-    }
-  </style>
+  <title>Binary Addition</title>
 </head>
 <body>
-  <h1>Boolean Algebra Performance Viewer</h1>
-  <label for="num1">Binary Number 1:</label>
-  <input type="text" id="num1" name="num1" size="150px" value="10101010101010101010101010101010101010101010101010"><br><br>
-  <label for="num2">Binary Number 2:</label>
-  <input type="text" id="num2" name="num2" size="150px" value="01010101010101010101010101010101010101010101010101"><br><br>
-  <label for="binaryLength">Binary Length:</label>
-  <input type="number" id="binaryLength" name="binaryLength" value="64"><br><br>
-  <label for="iterations">Iteration Count:</label>
-  <input type="text" id="iterations" name="iterations" value="10"><br><br>
-  <button onclick="runBenchmark()">Run Benchmark</button>
-  <p>Iteration: <span id="iterationCount">0</span></p>
-  <div id="results"></div>
+  <h1>Binary Addition</h1>
+
+  <label for="binary-input-1">Binary Input 1:</label>
+  <input type="text" id="binary-input-1" value="1010">
+
+  <label for="binary-input-2">Binary Input 2:</label>
+  <input type="text" id="binary-input-2" value="1101">
+
+  <button onclick="run()">Run</button>
+
+  <h2>Results</h2>
+
+  <p>Non-Optimized:</p>
+  <p id="non-optimized-output"></p>
+  <p>Time taken: <span id="non-optimized-time"></span> ms</p>
+
+  <p>Optimized:</p>
+  <p id="optimized-output"></p>
+  <p>Time taken: <span id="optimized-time"></span> ms</p>
+
+  <script>
+    // Binary addition without optimization
+    function binaryAdditionNonOptimized() {
+      const binary1 = document.getElementById('binary-input-1').value;
+      const binary2 = document.getElementById('binary-input-2').value;
+
+      let result = '';
+      let carry = 0;
+
+      // Add digits one by one
+      for (let i = binary1.length - 1; i >= 0; i--) {
+        const digit1 = Number(binary1.charAt(i));
+        const digit2 = Number(binary2.charAt(i));
+        const sum = digit1 + digit2 + carry;
+        if (sum >= 2) {
+          result = (sum % 2) + result;
+          carry = 1;
+        } else {
+          result = sum + result;
+          carry = 0;
+        }
+      }
+
+      // Add remaining carry if any
+      if (carry > 0) {
+        result = carry + result;
+      }
+
+      return result;
+    }
+
+    // Binary addition with optimization
+    function binaryAdditionOptimized() {
+      const binary1 = document.getElementById('binary-input-1').value;
+      const binary2 = document.getElementById('binary-input-2').value;
+
+      let result = '';
+      let carry = 0;
+
+      // Add digits one by one
+      for (let i = binary1.length - 1; i >= 0; i--) {
+        const digit1 = Number(binary1.charAt(i));
+        const digit2 = Number(binary2.charAt(i));
+        const sum = digit1 + digit2 + carry;
+        result = (sum % 2) + result;
+        carry = sum >> 1; // Same as sum / 2
+      }
+
+      // Add remaining carry if any
+      if (carry > 0) {
+        result = carry + result;
+      }
+
+      return result;
+    }
+
+    // Utility function to measure the time taken by a function
+    function measurePerformance(fn) {
+  const start = window.performance.now();
+  for (let i = 0; i < 100000; i++) {
+    fn();
+  }
+  const end = window.performance.now();
+  const time = end - start;
+  return [time];
+}
+
+
+    function run() {
+      // Measure performance of non-optimized function
+      const [nonOptimizedTime] = measurePerformance(binaryAdditionNonOptimized);
+      const nonOptimizedOutput = binaryAdditionNonOptimized();
+      
+
+
+  // Display results and time taken
+  document.getElementById('non-optimized-output').textContent = nonOptimizedOutput;
+  document.getElementById('non-optimized-time').textContent = nonOptimizedTime;
+
+  // Measure performance of optimized function
+  const [optimizedTime] = measurePerformance(binaryAdditionOptimized);
+  const optimizedOutput = binaryAdditionOptimized();
+
+  // Display results and time taken
+  document.getElementById('optimized-output').textContent = optimizedOutput;
+  document.getElementById('optimized-time').textContent = optimizedTime;
+}
+</script>
 </body>
 </html>
+     
